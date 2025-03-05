@@ -69,6 +69,13 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <li><a href="browse.html">Browse</a></li>
                         <li><a href="details.html">Details</a></li>
                         <li><a href="streams.html">Streams</a></li>
+                        {% if request.user.is_authenticated %}
+                          <li><a href="#">{{ request.user.first_name }}</a></li>
+                          <li><a href="{% url 'logout' %}">Выйти</a></li>
+                        {% else %}
+                           <li><a href="{% url 'login' %}">Войти</a></li>
+                           <li><a href="{% url 'register' %}">Зарегистрироваться</a></li>
+                           {% endif %}
                         <li><a href="profile.html">Profile <img src="{% static 'assets/images/profile-header.jpg' %}" alt=""></a></li>
                     </ul>   
                     <a class='menu-trigger'>
@@ -86,7 +93,27 @@ https://templatemo.com/tm-579-cyborg-gaming
     <div class="row">
       <div class="col-lg-12">
         <div class="page-content">
-
+          {% if messages %}
+            <div class="container mt-4">
+              {% for message in messages %}
+                <div class="alert
+                  {% if message.tags == 'error' %}
+                    alert-danger
+                  {% elif message.tags == 'success' %}
+                    alert-success
+                  {% elif message.tags == 'warning' %}
+                    alert-warning
+                  {% else %}
+                    alert-info
+                  {% endif %}
+                  alert-dismissible fade show" role="alert"
+                >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
           <!-- ***** Banner Start ***** -->
           <div class="main-banner">
             <div class="row">
