@@ -30,7 +30,6 @@ class Image(models.Model):
         verbose_name = 'Изображение продукта'
         verbose_name_plural = 'Изображения продуктов'
 
-# TODO: Сделать связб на таблицу User
 class Product(models.Model):
     user = models.ForeignKey(
         User,
@@ -88,16 +87,17 @@ class Rating(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)],
         verbose_name='Оценка'
     )
-    commet = models.TextField(
+    comment = models.TextField(
         max_length=500,
         verbose_name='Комментарий'
     )
     create_date = models.DateTimeField(
         verbose_name='Дата создания',
+        auto_now_add=True
     )
 
-   ## def __str__(self):
-       ## return self.product
+    def __str__(self):
+        return f'{self.user} --> {self.product}'
     
     class Meta:
         verbose_name = 'Отзыв'
@@ -111,9 +111,10 @@ class RatingAnswer(models.Model):
     rating = models.ForeignKey(
         Rating,
         on_delete=models.CASCADE,
-        verbose_name='Отзыв'
+        verbose_name='Отзыв',
+        related_name='rating_answers'
     )
-    commet = models.TextField(
+    comment = models.TextField(
         max_length=500,
         verbose_name='Комментарий'
     )
@@ -131,6 +132,9 @@ class RatingAnswer(models.Model):
             verbose_name='Ограничение по времени'
     )
 
+    def __str__(self):
+        return f'{self.user} --> {self.rating}'
+    
 '''class Order(models.Model):
    # user = models.ForeignKey()
     product = models.ForeignKey(

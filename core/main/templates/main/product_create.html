@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
-    <!-- ***** Main Content Start ***** -->
+   <!-- ***** Main Content Start ***** -->
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -33,39 +32,20 @@
                   </div>
                 {% endif %}
                 <div class="heading-section">
-                  <h4>Войти</h4>
+                  <h4>Создание продукта</h4>
                 </div>
                 <div class="login-form bg-dark-transparent p-4 rounded">
-                  <form action="." method="post">
-                    {% csrf_token %}
-                    <div class="form-group mb-3">
-                      <label for="email" class="form-label">Email</label>
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="email"
-                        name="email"
-                        placeholder="Введите ваш email"
-                        required
-                      />
-                    </div>
-                    <div class="form-group mb-3">
-                      <label for="password" class="form-label">Пароль</label>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="password"
-                        name="password"
-                        placeholder="Введите ваш пароль"
-                        required
-                      />
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="main-border-button">
-                        Войти
-                      </button>
+
+                  <form action="." method="post" enctype="multipart/form-data">
+                      <div class="text-center">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <button type="submit" class="main-border-button">
+                            Создать
+                          </button>
                     </div>
                   </form>
+
                   <div class="text-center mt-3">
                     <span>Ещё нет аккаунта?</span>
                     <a href="register.html" class="text-decoration-underline"
