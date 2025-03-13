@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, Http404
-from .models import Product,Rating,RatingAnswer
+from .models import Product,Rating,RatingAnswer, PaymentMethod, Order
 from .forms import ProductCreateForm, ProductUpdateForm
 from django.contrib import messages
 from django.db.models import Avg
@@ -98,3 +98,38 @@ def rating_answer_create_view(request, rating_id):
 
         messages.success(request, 'Успешно отправлено')
         return redirect('product_detail', rating.product.id)
+    
+def user_profile_view(request):
+    return render(
+        request,
+        'main/user_profile.html'
+    )
+
+def product_payment_create_view(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    seller_payment_methods = PaymentMethod.objects.filter(user=product.user)
+    quantity = 0
+
+    if 'quantity' in request.GET:
+        quantity = int(request.GET.get('quantity'))
+
+    if quantity < 1:
+        messages.error(request, 'Укажите кол-во')
+        return redirect('product_detail', product_id)
+
+    if request.method == 'POST':
+        check = request.FILES.get('check', '')
+        order = Order(
+            user = request.user,
+            product = product,
+            quantity = quantity,
+            check_image = check
+            )
+        order.save()
+        messages.success(request, 'Заявка на оплату отправлено продавцу')
+
+    return redirect(
+        request,
+        'main/product_payment.html',
+        {'seller_payment_methods':seller_payment_methods}
+        )

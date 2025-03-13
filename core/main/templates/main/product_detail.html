@@ -59,6 +59,41 @@
   text-decoration: none;
   cursor: pointer;
 }
+    .quantity-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px; /* при необходимости, чтобы отодвинуть от карусели */
+}
+
+.quantity-container label {
+  margin-right: 10px;
+}
+
+.quantity-controls {
+  display: inline-flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden; /* чтобы кнопки и инпут были аккуратно обрезаны по углам */
+}
+
+.quantity-controls .quantity-btn {
+  background-color: #f0f0f0;
+  border: none;
+  width: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}
+
+.quantity-controls .quantity-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.quantity-controls input[type="number"] {
+  border: none;
+  text-align: center;
+}
+
   </style>
 
 <div id="myModal" class="modal">
@@ -213,6 +248,35 @@
             </div>
           </div>
           <!-- ***** Featured Games End ***** -->
+          <!-- Под каруселью изображений или там, где нужно вывести блок с количеством -->
+          <div class="quantity-container">
+            <form id="paymentForm"
+                  method="GET"
+                  action="{% url 'product_payment_create' product.id 1 %}"
+                    onsubmit="
+                      const qty = document.getElementById('quantity').value;
+                      alert('Количество: ' + qty);
+                      this.action = this.action.replace('/1/', '/' + qty + '/');
+                    "
+                    >
+
+              <label for="quantity" style="color: #fff;">Количество:</label>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn minus-btn">−</button>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  min="1"
+                  value="1"
+                  style="width: 50px; text-align: center;"
+                >
+                <button type="button" class="quantity-btn plus-btn">+</button>
+              </div>
+              <button class="btn btn-primary" style="margin-left: 10px;" type="submit">В корзину</button>
+            </form>
+
+          </div>
 
           <!-- ***** Start Stream Start ***** -->
           <div class="start-stream">
@@ -404,6 +468,22 @@
       });
     });
   });
+  const minusBtn = document.querySelector('.minus-btn');
+  const plusBtn = document.querySelector('.plus-btn');
+  const quantityInput = document.querySelector('#quantity');
+
+  minusBtn.addEventListener('click', function() {
+    let currentValue = parseInt(quantityInput.value) || 1;
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  });
+
+  plusBtn.addEventListener('click', function() {
+    let currentValue = parseInt(quantityInput.value) || 1;
+    quantityInput.value = currentValue + 1;
+  });
+
 </script>
 
 
