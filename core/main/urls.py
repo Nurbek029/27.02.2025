@@ -13,5 +13,7 @@ urlpatterns = [
 
     path('profile/', views.user_profile_view, name='user_profile'),
 
-    path('product/<int:product_id>/payment/create/<int:product_quantity>/', views.product_payment_create_view, name='product_payment_create')
+    path('product/<int:product_id>/payment/create/<int:product_quantity>/', views.product_payment_create_view, name='product_payment_create'),
+
+    path('catalog', views.product_list_view, name='catalog'),
 ]
