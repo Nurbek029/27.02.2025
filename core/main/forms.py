@@ -7,7 +7,7 @@ class ProductCreateForm(forms.ModelForm):
         fields = (
             'title',
             'category',
-            'main_images',
+            'main_image',
             'images',
             'description',
             'price',
@@ -19,7 +19,7 @@ class ProductUpdateForm(forms.ModelForm):
         fields = (
             'title',
             'category',
-            'main_images',
+            'main_image',
             'images',
             'description',
             'price',

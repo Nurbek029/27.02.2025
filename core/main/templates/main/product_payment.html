@@ -100,24 +100,37 @@
   <!-- Инпут для чека -->
   <div class="row" style="margin-top: 40px;">
     <div class="col-lg-12 text-center">
-      <form method="post" action="?quantity={{ quantity }}" enctype="multipart/form-data">
+
+      <form method="post" action="." enctype="multipart/form-data">
         {% csrf_token %}
         <label for="checkInput" style="display: block; margin-bottom: 10px;">
           Прикрепите чек
         </label>
-        <input
-          type="file"
-          name="check"
-          id="checkInput"
-          class="form-control check-input"
-          placeholder="Например, номер транзакции"
-          required
-        >
-        <button type="submit" class="btn btn-primary pay-button">
-          Оплатить
-        </button>
+          <div class="d-flex justify-content-center align-items-center mb-3">
+            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">-</button>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control text-center mx-2" style="width: 60px;">
+            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
+          </div>
+          <input type="file" name="check" id="checkInput" class="form-control check-input" placeholder="Например, номер транзакции" required>
+          <button type="submit" class="btn btn-primary pay-button">
+            Оплатить
+          </button>
+
       </form>
     </div>
   </div>
 </div>
+
+<script>
+  function changeQuantity(amount) {
+      let input = document.getElementById('quantity');
+      let value = parseInt(input.value);
+      if (!isNaN(value)) {
+          let newValue = value + amount;
+          if (newValue >= 1) {
+              input.value = newValue;
+          }
+      }
+  }
+</script>
 {% endblock %}

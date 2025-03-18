@@ -20,10 +20,10 @@
                     <div class="main-info header-text">
                       <span>Offline</span>
                       <h4>
-                          {{ request.user.first_name }}
-                          {% if request.user.last_name %}
-                            {{request.user.last_name }}
-                          {% endif %}
+                        {{ request.user.first_name }}
+                        {% if request.user.last_name %}
+                          {{ request.user.last_name }}
+                        {% endif %}
                       </h4>
                       <p>You Haven't Gone Live yet. Go Live By Touching The Button Below.</p>
                       <div class="main-border-button">
@@ -46,7 +46,7 @@
                       <div class="row">
                         <div class="col-lg-12">
                           <div class="heading-section">
-                            <h4><em>Способы</em> Оплаты сделать валидаторы только 4 способа оплаты</h4>
+                            <h4><em>Способы</em> Оплаты</h4>
                           </div>
                         </div>
                         {% for payment_method in request.user.payment_methods.all %}
@@ -82,35 +82,22 @@
               <div class="heading-section">
                 <h4><em>Your Gaming</em> Library</h4>
               </div>
-              <div class="item">
-                <ul>
-                  <li><img src="{% static 'assets/images/game-01.jpg' %}" alt="" class="templatemo-item"></li>
-                  <li><h4>Dota 2</h4><span>Sandbox</span></li>
-                  <li><h4>Date Added</h4><span>24/08/2036</span></li>
-                  <li><h4>Hours Played</h4><span>634 H 22 Mins</span></li>
-                  <li><h4>Currently</h4><span>Downloaded</span></li>
-                  <li><div class="main-border-button border-no-active"><a href="#">Donwloaded</a></div></li>
-                </ul>
-              </div>
-              <div class="item">
-                <ul>
-                  <li><img src="{% static 'assets/images/game-02.jpg' %}" alt="" class="templatemo-item"></li>
-                  <li><h4>Fortnite</h4><span>Sandbox</span></li>
-                  <li><h4>Date Added</h4><span>22/06/2036</span></li>
-                  <li><h4>Hours Played</h4><span>745 H 22 Mins</span></li>
-                  <li><h4>Currently</h4><span>Downloaded</span></li>
-                  <li><div class="main-border-button border-no-active"><a href="#">Donwloaded</a></div></li>
-                </ul>
-              </div>
-              <div class="item last-item">
-                <ul>
-                  <li><img src="{% static 'assets/images/game-03.jpg' %}" alt="" class="templatemo-item"></li>
-                  <li><h4>CS-GO</h4><span>Sandbox</span></li>
-                  <li><h4>Date Added</h4><span>21/04/2022</span></li>
-                  <li><h4>Hours Played</h4><span>632 H 46 Mins</span></li>
-                  <li><h4>Currently</h4><span>Downloaded</span></li>
-                  <li><div class="main-border-button border-no-active"><a href="#">Donwloaded</a></div></li>
-                </ul>
+              {% for payment_request in payment_requests %}
+                <div class="item">
+                  <ul>
+                    <li><img src="{{ payment_request.check_image.url }}" alt="" class="templatemo-item"></li>
+                    <li><h4>Покупатель</h4><span>{{ payment_request.user.first_name }}</span></li>
+                    <li><h4>Дата создания</h4><span>{{ payment_request.created_date|date:"d/m/Y H:i" }}</span></li>
+                    <li><h4>Название продукта</h4><span>{{ payment_request.product }}</span></li>
+                    <li><h4>Статус</h4><span>{{ payment_request.get_status_display }}</span></li>
+                    <li><div class="main-border-button border-no-active"><a download="{{ payment_request.check_image.url }}" href="{{ payment_request.check_image.url }}">Скачать чек</a></div></li>
+                  </ul>
+                </div>
+              {% endfor %}
+              <div class="col-lg-12">
+                <div class="main-button">
+                  <a href="{% url 'payment_requests' %}">Посмотреть все</a>
+                </div>
               </div>
             </div>
           </div>
@@ -119,5 +106,4 @@
       </div>
     </div>
   </div>
- 
 {% endblock %}
