@@ -110,8 +110,12 @@ def rating_answer_create_view(request, rating_id):
 
 
 def user_profile_view(request):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Только авторизованные!')
+        return redirect('index' )
+    
     payment_requests = PaymentRequest.objects.filter(product__user=request.user, status='in_processing').order_by('-id')[:3]
-
+  
     return render(
         request=request,
         template_name='main/user_profile.html',
