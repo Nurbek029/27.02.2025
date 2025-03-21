@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.shortcuts import render, get_object_or_404, redirect, Http404
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Sum
 from django.core.paginator import Paginator
 
 from .forms import ProductCreateForm, ProductUpdateForm
@@ -191,6 +191,7 @@ def payment_request_update_status(request, payment_request_id):
         if payment_request.status == 'accepted':
 
             payment = Payment(
+                seller=payment_request.product.user,
                 user=payment_request.user.first_name,
                 product=payment_request.product.title,
                 quantity=payment_request.quantity,
@@ -202,3 +203,17 @@ def payment_request_update_status(request, payment_request_id):
         messages.success(request, 'Успешно изменено')
 
     return redirect('payment_requests')
+
+def payment_list_view(request):
+    payments = Payment.objects.filter(seller=request.user)
+
+    total_payments = payments.aggregate(Sum('total_price'))['total_price__sum']
+
+    return render(
+        request=request,
+        template_name='main/payments.html',
+        context={
+            "payments": payments,
+            "total_payments": total_payments
+        }
+    )

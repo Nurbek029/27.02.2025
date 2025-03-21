@@ -16,6 +16,7 @@ urlpatterns = [
     path('payment_requests/', views.payment_request_list_view, name='payment_requests'),
     path('payment_request/<int:payment_request_id>/update/', views.payment_request_update_status,
          name='payment_request_update_status'),
+    path('payments/', views.payment_list_view, name='payments'),
 
     path('product/<int:product_id>/payment/create/', views.product_payment_create_view,
          name='product_payment_create'),

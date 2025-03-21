@@ -220,6 +220,10 @@ class PaymentRequest(models.Model):
 
 
 class Payment(models.Model):
+    seller = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     user = models.CharField(
         max_length=225,
         verbose_name='Покупатель'
@@ -237,7 +241,11 @@ class Payment(models.Model):
     )
     total_price = models.PositiveIntegerField(
         verbose_name='Сумма'
+    ) 
+    created_date = models.DateTimeField(
+        auto_now_add=True,
     )
+    
 
     class Meta:
         verbose_name = 'Оплата'
